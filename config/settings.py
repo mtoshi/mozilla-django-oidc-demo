@@ -12,7 +12,7 @@ import os
 import environ
 
 
-env = environ.Env(DEBUG=(bool, False))
+env = environ.Env()
 env.read_env(env.str('ENV_PATH', '.env'))
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
@@ -23,22 +23,24 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/2.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = env('SECRET_KEY')
+SECRET_KEY = env.str('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = env('DEBUG')
+DEBUG = env.bool('DEBUG', default=False)
 
-ALLOWED_HOSTS = env('ALLOWED_HOSTS')
+ALLOWED_HOSTS = env.tuple('ALLOWED_HOSTS')
 
 # Application definition
 
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
+    'mozilla_django_oidc',  # Load after auth
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'app',
 ]
 
 MIDDLEWARE = [
@@ -51,12 +53,17 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
+AUTHENTICATION_BACKENDS = (
+    'mozilla_django_oidc.auth.OIDCAuthenticationBackend',
+    'django.contrib.auth.backends.ModelBackend',
+)
+
 ROOT_URLCONF = 'config.urls'
 
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -105,9 +112,9 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/2.2/topics/i18n/
 
-LANGUAGE_CODE = env('LANGUAGE_CODE')
+LANGUAGE_CODE = env.str('LANGUAGE_CODE')
 
-TIME_ZONE = env('TIME_ZONE')
+TIME_ZONE = env.str('TIME_ZONE')
 
 USE_I18N = True
 
@@ -120,3 +127,37 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
 STATIC_URL = '/static/'
+
+#
+# Custom user model
+#
+
+# AUTH_USER_MODEL = 'app.User'
+
+#
+# LOGIN/LOGOUT
+#
+
+LOGIN_REDIRECT_URL = '/'
+LOGOUT_REDIRECT_URL = '/accounts/login/'
+
+# Session
+
+SESSION_COOKIE_AGE = env.int('SESSION_COOKIE_AGE')
+
+#
+# OIDC settings
+#
+
+OIDC_OP_JWKS_ENDPOINT = env.str('OIDC_OP_JWKS_ENDPOINT')
+OIDC_OP_AUTHORIZATION_ENDPOINT = env.str('OIDC_OP_AUTHORIZATION_ENDPOINT')
+OIDC_OP_TOKEN_ENDPOINT = env.str('OIDC_OP_TOKEN_ENDPOINT')
+OIDC_OP_USER_ENDPOINT = env.str('OIDC_OP_USER_ENDPOINT')
+OIDC_RP_SIGN_ALGO = env.str('OIDC_RP_SIGN_ALGO')
+OIDC_RP_SCOPES = env.str('OIDC_RP_SCOPES')
+OIDC_RP_CLIENT_ID = env.str('OIDC_RP_CLIENT_ID')
+OIDC_RP_CLIENT_SECRET = env.str('OIDC_RP_CLIENT_SECRET')
+OIDC_TOKEN_USE_BASIC_AUTH = env.bool('OIDC_TOKEN_USE_BASIC_AUTH')
+OIDC_VERIFY_SSL = env.bool('OIDC_VERIFY_SSL')
+OIDC_STORE_ACCESS_TOKEN = env.bool('OIDC_STORE_ACCESS_TOKEN')
+OIDC_STORE_ID_TOKEN = env.bool('OIDC_STORE_ID_TOKEN')

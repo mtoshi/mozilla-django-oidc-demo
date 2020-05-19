@@ -54,7 +54,8 @@ MIDDLEWARE = [
 ]
 
 AUTHENTICATION_BACKENDS = (
-    'mozilla_django_oidc.auth.OIDCAuthenticationBackend',
+    # 'mozilla_django_oidc.auth.OIDCAuthenticationBackend',
+    'auth.CustomOIDCAuthenticationBackend',  # Custom backend
     'django.contrib.auth.backends.ModelBackend',
 )
 
@@ -132,7 +133,7 @@ STATIC_URL = '/static/'
 # Custom user model
 #
 
-# AUTH_USER_MODEL = 'app.User'
+AUTH_USER_MODEL = 'app.User'
 
 #
 # LOGIN/LOGOUT

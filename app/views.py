@@ -1,12 +1,19 @@
 # -*- coding: utf-8 -*-
-"""app.viewes"""
+"""api.views.rank."""
 
-from django.views.generic import TemplateView
+from django.conf import settings
+from django.views.generic import View
+from django.shortcuts import render_to_response
 from django.contrib.auth.mixins import LoginRequiredMixin
 
 
-class HomeView(LoginRequiredMixin, TemplateView):
+class HomeView(LoginRequiredMixin, View):
 
     """HomeView."""
 
-    template_name = "home/index.html"
+    def get(self, request):
+        """Get."""
+        return render_to_response('home/index.html', {
+            'request': request,
+            'settings': settings,
+        }, status=200)

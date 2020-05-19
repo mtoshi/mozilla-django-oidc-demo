@@ -1,11 +1,16 @@
 <h1>Home</h1>
 
 <div>
-  <p>{{ user.email }}</p>
-  <p>{{ request.COOKIES }}</p>
-  <p>{{ request.GET }}</p>
-  <p>{{ request.session }}</p>
-  <p>{{ request.META }}</p>
+  <hr>
+  <p>email: {{ request.user.email }}</p>
+  <hr>
+  <p>access token: {{ session_data.oidc_access_token }}</p>
+  <hr>
+  <p>id token: {{ session_data.oidc_id_token }}</p>
+  <hr>
+  <p>cookies: {{ request.COOKIES }}</p>
+  <hr>
+  <p>headers: {{ request.META }}</p>
 </div>
 
 

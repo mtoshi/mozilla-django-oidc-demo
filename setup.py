@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""setup.py"""
+"""setup."""
 
 from setuptools import setup
 from setuptools import find_packages
@@ -11,7 +11,7 @@ with open('requirements.txt', 'w') as _file:
 
 setup(
     name='mozilla-django-oidc-demo',
-    version='0.0.0',
+    version='0.0.1',
     url='https://github.com/mtoshi/mozilla-django-oidc-demo',
     author='mtoshi',
     author_email='mtoshi@outlook.com',

@@ -1,0 +1,18 @@
+<h1>Home</h1>
+
+<form action="{% url 'oidc_logout' %}" method="post">{{ csrf_token_html|safe }}
+  <input type="submit" value="logout">
+</form>
+
+<div>
+  <hr>
+  <p>email: {{ request.user.email }}</p>
+  <hr>
+  <p>access token: {{ session_data.oidc_access_token }}</p>
+  <hr>
+  <p>id token: {{ session_data.oidc_id_token }}</p>
+  <hr>
+  <p>cookies: {{ request.COOKIES }}</p>
+  <hr>
+  <p>headers: {{ request.META }}</p>
+</div>

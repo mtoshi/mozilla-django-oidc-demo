@@ -13,7 +13,7 @@ Demo app installation
 .. code::
 
     $ python3.7 -m venv /tmp/mozilla-django-oidc-demo && source /tmp/mozilla-django-oidc-demo/bin/activate
-    $ git clone git@gitlab.com:mtoshi/mozilla-django-oidc-demo.git
+    $ git clone git@github.com:mtoshi/mozilla-django-oidc-demo.git
     $ cd mozilla-django-oidc-demo
     $ pip install setuptools --upgrade && pip install pip --upgrade
     $ pip install -r requirements.txt
